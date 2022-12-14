@@ -1,0 +1,7 @@
+For the sake of the security please generate new certificates and private keys when using TLS.
+
+To generate new certificate - key pairs you can use GitBash with the following command:
+
+`openssl req -nodes -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365`
+
+then update the certificate and key path in code
