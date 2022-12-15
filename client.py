@@ -1,7 +1,7 @@
 import socket
 import ssl
 
-from helper_functions import sendBytes
+from helper_functions import receiveBytes, sendBytes
 
 
 SERVER_SOCKET_HOST = "192.168.0.104"
@@ -44,6 +44,8 @@ while True:
     try:
 
         sendBytes(chosenSocket, bytes(message, "utf-8"))
+        received = receiveBytes(chosenSocket)
+        print(received.decode('utf-8'))
     except Exception as e:
         print("Failed sending message data to remote socket!")
         raise e

@@ -6,7 +6,7 @@ import time
 
 import threading
 
-from helper_functions import receiveBytes
+from helper_functions import receiveBytes, sendBytes
 
 
 SERVER_HOST_NAME = socket.gethostname()
@@ -28,6 +28,7 @@ def threadedConnectionHandler(remoteSocket: socket.socket, lock: threading.Lock)
             messageBytes = receiveBytes(remoteSocket)  # this blocks
             messageDecoded = messageBytes.decode('utf-8')
             print(messageDecoded)
+            sendBytes(remoteSocket, b'SERVER: I have received your message')
         except Exception as e:
             print("Failed to receive bytes. Will close connection to remote socket. " + str(e))
             remoteSocket.close()
@@ -49,7 +50,7 @@ def threadedServerListenerHandler(serverSocket: socket.socket, maxSimultaneousCo
 
     if USE_TLS:
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        context.load_cert_chain(certfile="./client-security/cert.pem", keyfile="./client-security/key.pem")
+        context.load_cert_chain(certfile="./server-security/cert.pem", keyfile="./server-security/key.pem")
         chosenSocket = context.wrap_socket(serverSocket, server_side=True)
 
     while True:
